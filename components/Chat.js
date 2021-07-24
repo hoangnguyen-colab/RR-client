@@ -3,7 +3,8 @@ import socketio from 'socket.io-client';
 import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
 
-const endpoint = 'http://localhost:5000';
+// const endpoint = 'http://localhost:5000';
+const endpoint = 'https://rr-chat-server.herokuapp.com';
 
 function Chat() {
     const { socket, handleSetSocket } = useContext(SocketContext);
