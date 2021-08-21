@@ -7,7 +7,7 @@ function GuestMessage({ id = "", message = "", from = "" }) {
         <span style={styles.messageDataTime}>10:10 AM, Today</span> 
         &nbsp; &nbsp;
         <span style={styles.messageDataName}>{from}</span>{" "}
-        <i class="fa fa-circle me"></i>
+        <i className="fa fa-circle me"></i>
       </div>
       <div
         style={{
