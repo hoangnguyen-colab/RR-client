@@ -134,7 +134,7 @@ function LoginForm() {
                                     value: e.target.value
                                 })}
                         />
-                        <TextField
+                        {/* <TextField
                             label="Room"
                             className={classes.input_field}
                             margin="normal"
@@ -144,7 +144,7 @@ function LoginForm() {
                                     field: 'room',
                                     value: e.target.value
                                 })}
-                        />
+                        /> */}
 
                         {error && (
                             <Typography variant="caption" className={classes.error_message}>

@@ -2,6 +2,8 @@ import react, { useState, useEffect, useContext } from 'react';
 import socketio from 'socket.io-client';
 import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
+import UserMessage from './ChatMessage/UserMessage';
+import GuestMessage from './ChatMessage/GuestMessage';
 
 // const endpoint = 'http://localhost:5000';
 const endpoint = 'https://rr-chat-server.herokuapp.com';
@@ -15,7 +17,7 @@ function Chat() {
     useEffect(() => {
         if (!socket) {
             const socket_connect = socketio(endpoint);
-            
+
             socket_connect.on('message', message => {
                 setMessages(messages => [...messages, message]);
             });
@@ -36,21 +38,43 @@ function Chat() {
     }
 
     return (
-        <div>
+        <div style={styles.chat}>
+            <div style={styles.chatHistory}>
+                <ul style={{ listStyleType: 'none' }}>
+                    {messages.map((item, index) => {
+                        if (item.from === user.name) {
+                            return <UserMessage key={index} from={item.from} message={item.message} /> 
+                        } else {
+                            return <GuestMessage key={index} from={item.from} message={item.message} />
+                        }
+                    })}
+                </ul>
+            </div>
+
             <form onSubmit={handleClickSend}>
 
                 <input value={message} onChange={(e) => setMessage(e.target.value)} />
                 <button type="submit">Send</button>
             </form>
-            <div>
-                {messages.map((item, index) => {
-                    return (
-                        <p key={index}>{item.from}: {item.message}</p>
-                    )
-                })}
-            </div>
         </div>
     )
 }
 
-export default Chat
+export default Chat;
+
+const styles = {
+    chat: {
+        width: '490px',
+        float: 'left',
+        background: '#F2F5F8',
+        borderTopRightRadius: '5px',
+        borderBottomRightRadius: '5px',
+        color: '#434651'
+    },
+    chatHistory: {
+        padding: '30px 10px 20px',
+        borderBottom: '2px solid white',
+        overflowY: 'scroll',
+        height: '575px',
+    }
+}

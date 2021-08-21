@@ -17,7 +17,7 @@ function Home() {
 
   return (
     <div>
-      {user.id && <Chat />}
+      <Chat />
     </div >
 
   )
