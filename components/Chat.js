@@ -1,4 +1,4 @@
-import react, { useState, useEffect, useContext } from 'react';
+import react, { useState, useEffect, useContext, useRef } from 'react';
 import socketio from 'socket.io-client';
 import { SocketContext } from '../contexts/SocketContext';
 import { UserContext } from '../contexts/UserContext';
@@ -13,6 +13,7 @@ function Chat() {
     const { user } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const messagesEndRef = useRef(null)
 
     useEffect(() => {
         if (!socket) {
@@ -24,6 +25,10 @@ function Chat() {
             handleSetSocket(socket_connect);
         }
     }, []);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     const handleClickSend = (event) => {
         event.preventDefault();
@@ -43,16 +48,16 @@ function Chat() {
                 <ul style={{ listStyleType: 'none' }}>
                     {messages.map((item, index) => {
                         if (item.from === user.name) {
-                            return <UserMessage key={index} from={item.from} message={item.message} /> 
+                            return <UserMessage key={index} from={item.from} message={item.message} />
                         } else {
                             return <GuestMessage key={index} from={item.from} message={item.message} />
                         }
                     })}
+                    <li ref={messagesEndRef}></li>
                 </ul>
             </div>
 
             <form onSubmit={handleClickSend}>
-
                 <input value={message} onChange={(e) => setMessage(e.target.value)} />
                 <button type="submit">Send</button>
             </form>
@@ -69,12 +74,13 @@ const styles = {
         background: '#F2F5F8',
         borderTopRightRadius: '5px',
         borderBottomRightRadius: '5px',
-        color: '#434651'
+        color: '#434651',
+        paddingBottom: '20px',
     },
     chatHistory: {
         padding: '30px 10px 20px',
         borderBottom: '2px solid white',
         overflowY: 'scroll',
-        height: '575px',
+        height: '80vh',
     }
 }
