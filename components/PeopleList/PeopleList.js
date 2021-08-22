@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { SocketContext } from '@contexts/SocketContext';
+import Image from 'next/image';
 
 function PeopleList() {
     const { socket } = useContext(SocketContext);
@@ -24,11 +25,14 @@ function PeopleList() {
     const UserItem = ({ name = "" }) => {
         return (
             <li style={styles.user}>
-                <img
-                    style={styles.userImg}
-                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
-                    alt="avatar"
-                />
+                <div style={styles.userImg}>
+                    <Image
+                        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
+                        alt="avatar"
+                        width={50}
+                        height={50}
+                    />
+                </div>
                 <div style={styles.userAbout}>
                     <div className="name">{name}</div>
                     <div style={{ color: "#92959E" }}>

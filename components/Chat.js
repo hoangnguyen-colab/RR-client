@@ -1,36 +1,25 @@
 import react, { useState, useEffect, useContext, useRef } from 'react';
-import socketio from 'socket.io-client';
-import { SocketContext } from '../contexts/SocketContext';
-import { UserContext } from '../contexts/UserContext';
+import { SocketContext } from '@contexts/SocketContext';
+import { UserContext } from '@contexts/UserContext';
 import UserMessage from './ChatMessage/UserMessage';
 import GuestMessage from './ChatMessage/GuestMessage';
 
-// const endpoint = 'http://localhost:5000';
-const endpoint = 'https://rr-chat-server.herokuapp.com';
-
 function Chat() {
-    const { socket, handleSetSocket } = useContext(SocketContext);
+    const { socket } = useContext(SocketContext);
     const { user } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const messagesEndRef = useRef(null)
 
     useEffect(() => {
-        if (!socket) {
-            const socket_connect = socketio(endpoint);
-            socket_connect.emit('join', {
-                userId: user.id,
-                userName: user.name
-            });
-
+        if (socket) {
             // socket_connect.on('join', userName => {
             //     setMessages(messages => [...messages, userName]);
             // });
 
-            socket_connect.on('message', message => {
+            socket.on('message', message => {
                 setMessages(messages => [...messages, message]);
             });
-            handleSetSocket(socket_connect);
         }
     }, []);
 

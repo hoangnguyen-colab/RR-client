@@ -6,13 +6,13 @@ import cookie from 'cookie';
 import App from 'next/app';
 function MyApp({ Component, pageProps }) {
   return (
-    <AuthProvider>
-      <SocketProvider>
+    <SocketProvider>
+      <AuthProvider>
         <UserProvider>
           <Component {...pageProps} />
         </UserProvider>
-      </SocketProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </SocketProvider>
   )
 }
 

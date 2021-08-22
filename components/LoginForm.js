@@ -1,7 +1,5 @@
 import React, { useReducer, useContext } from "react";
-import Cookie from "js-cookie";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth } from "@contexts/AuthContext";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -88,7 +86,6 @@ const styles = makeStyles((theme) => ({
 
 function LoginForm() {
     const classes = styles();
-    const { setAuthenticated } = useAuth();
     const [state, dispatch] = useReducer(loginReducer, initialState);
     const { isLoading, error, username, room } = state;
     const { handleSetUser } = useContext(UserContext);
@@ -98,13 +95,10 @@ function LoginForm() {
         dispatch({ type: 'login' });
 
         try {
-            const current_id = Date.now();
             handleSetUser({
-                id: current_id,
+                id: Date.now(),
                 name: username
             });
-            Cookie.set("token", current_id, { expires: 7 });
-            setAuthenticated(true);
         } catch (error) {
             dispatch({ type: 'error' });
         }
