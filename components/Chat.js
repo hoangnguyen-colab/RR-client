@@ -5,8 +5,8 @@ import { UserContext } from '../contexts/UserContext';
 import UserMessage from './ChatMessage/UserMessage';
 import GuestMessage from './ChatMessage/GuestMessage';
 
-// const endpoint = 'http://localhost:5000';
-const endpoint = 'https://rr-chat-server.herokuapp.com';
+const endpoint = 'http://localhost:5000';
+// const endpoint = 'https://rr-chat-server.herokuapp.com';
 
 function Chat() {
     const { socket, handleSetSocket } = useContext(SocketContext);
@@ -18,6 +18,13 @@ function Chat() {
     useEffect(() => {
         if (!socket) {
             const socket_connect = socketio(endpoint);
+            socket_connect.emit('join', {
+                userName: user.name
+            });
+
+            socket_connect.on('join', userName => {
+                setMessages(messages => [...messages, userName]);
+            });
 
             socket_connect.on('message', message => {
                 setMessages(messages => [...messages, message]);
@@ -35,7 +42,10 @@ function Chat() {
         if (message) {
             const mymessage = {
                 message,
-                from: user.name,
+                userId: user.id,
+                senderName: user.name,
+                messageId: Date.now(),
+                date: Date.now()
             }
             socket.emit('message', mymessage);
             setMessages(messages => [...messages, mymessage]);
@@ -47,12 +57,21 @@ function Chat() {
             <div style={styles.chatHistory}>
                 <ul style={{ listStyleType: 'none' }}>
                     {messages.map((item, index) => {
-                        if (item.from === user.name) {
-                            return <UserMessage key={index} from={item.from} message={item.message} />
+                        if(!item.messageId){
+                            return <li style={{
+                                // position: 'absolute',
+                                color: 'gray',
+                                textAlign: 'center',
+                                marginLeft: '-20px',
+                            }}>{item} has join</li>
+                        }
+                        if (item.userId === user.id) {
+                            return <UserMessage key={item.messageId} message={item} />
                         } else {
-                            return <GuestMessage key={index} from={item.from} message={item.message} />
+                            return <GuestMessage key={item.messageId} message={item} />
                         }
                     })}
+                   
                     <li ref={messagesEndRef}></li>
                 </ul>
             </div>

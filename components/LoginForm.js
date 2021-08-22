@@ -98,12 +98,12 @@ function LoginForm() {
         dispatch({ type: 'login' });
 
         try {
-            const id = Math.floor(Math.random() * 100);
+            const current_id = Date.now();
             handleSetUser({
-                id: id,
+                id: current_id,
                 name: username
             });
-            Cookie.set("token", id, { expires: 7 });
+            Cookie.set("token", current_id, { expires: 7 });
             setAuthenticated(true);
         } catch (error) {
             dispatch({ type: 'error' });

@@ -4,9 +4,9 @@ function GuestMessage({ id = "", message = "", from = "" }) {
   return (
     <li>
       <div style={styles.messageData}>
-        <span style={styles.messageDataTime}>10:10 AM, Today</span> 
+        <span style={styles.messageDataTime}>{new Date(message.date)?.toLocaleTimeString()}</span> 
         &nbsp; &nbsp;
-        <span style={styles.messageDataName}>{from}</span>{" "}
+        <span style={styles.messageDataName}>{message.senderName}</span>{" "}
         <i className="fa fa-circle me"></i>
       </div>
       <div
@@ -15,7 +15,7 @@ function GuestMessage({ id = "", message = "", from = "" }) {
           ...styles.guestMessage,
         }}
       >
-        {message}
+        {message.message}
       </div>
     </li>
   );

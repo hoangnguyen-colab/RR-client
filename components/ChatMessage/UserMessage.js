@@ -1,12 +1,12 @@
 import React from "react";
 
-function UserMessage({ id = "", message = "", from = "" }) {
+function UserMessage({ message = {}}) {
   return (
     <li>
       <div style={{ ...styles.messageData, ...styles.alignRight }}>
-        <span style={styles.messageDataTime}>10:10 AM, Today</span> &nbsp;
+        <span style={styles.messageDataTime}>{new Date(message.date)?.toLocaleTimeString()}</span> &nbsp;
         &nbsp;
-        <span style={styles.messageDataName}>{from}</span>{" "}
+        <span style={styles.messageDataName}>{message.senderName}</span>{" "}
         <i className="fa fa-circle me"></i>
       </div>
       <div
@@ -16,7 +16,7 @@ function UserMessage({ id = "", message = "", from = "" }) {
           ...styles.floatRight,
         }}
       >
-        {message}
+        {message.message}
       </div>
     </li>
   );
