@@ -5,8 +5,8 @@ import { UserContext } from '../contexts/UserContext';
 import UserMessage from './ChatMessage/UserMessage';
 import GuestMessage from './ChatMessage/GuestMessage';
 
-const endpoint = 'http://localhost:5000';
-// const endpoint = 'https://rr-chat-server.herokuapp.com';
+// const endpoint = 'http://localhost:5000';
+const endpoint = 'https://rr-chat-server.herokuapp.com';
 
 function Chat() {
     const { socket, handleSetSocket } = useContext(SocketContext);
