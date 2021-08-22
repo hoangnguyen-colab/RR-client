@@ -19,12 +19,13 @@ function Chat() {
         if (!socket) {
             const socket_connect = socketio(endpoint);
             socket_connect.emit('join', {
+                userId: user.id,
                 userName: user.name
             });
 
-            socket_connect.on('join', userName => {
-                setMessages(messages => [...messages, userName]);
-            });
+            // socket_connect.on('join', userName => {
+            //     setMessages(messages => [...messages, userName]);
+            // });
 
             socket_connect.on('message', message => {
                 setMessages(messages => [...messages, message]);
@@ -52,26 +53,36 @@ function Chat() {
         }
     }
 
+    const NewUserMessage = ({ user }) => (
+        <li style={styles.liElement}>
+            <div style={{
+                display: 'block',
+                // position: 'absolute',
+                color: 'gray',
+                textAlign: 'center',
+                marginLeft: '-20px',
+                marginBottom: '10px',
+            }}>
+                {user} has join
+            </div>
+        </li>
+    )
+
     return (
         <div style={styles.chat}>
             <div style={styles.chatHistory}>
                 <ul style={{ listStyleType: 'none' }}>
                     {messages.map((item, index) => {
-                        if(!item.messageId){
-                            return <li style={{
-                                // position: 'absolute',
-                                color: 'gray',
-                                textAlign: 'center',
-                                marginLeft: '-20px',
-                            }}>{item} has join</li>
+                        if (!item.messageId) {
+                            return <NewUserMessage key={index} user={item} />
                         }
                         if (item.userId === user.id) {
-                            return <UserMessage key={item.messageId} message={item} />
+                            return <UserMessage key={index} message={item} />
                         } else {
-                            return <GuestMessage key={item.messageId} message={item} />
+                            return <GuestMessage key={index} message={item} />
                         }
                     })}
-                   
+
                     <li ref={messagesEndRef}></li>
                 </ul>
             </div>
@@ -88,7 +99,7 @@ export default Chat;
 
 const styles = {
     chat: {
-        width: '490px',
+        width: '40%',
         float: 'left',
         background: '#F2F5F8',
         borderTopRightRadius: '5px',
@@ -101,5 +112,9 @@ const styles = {
         borderBottom: '2px solid white',
         overflowY: 'scroll',
         height: '80vh',
+    },
+    liElement: {
+        display: 'block',
+        clear: 'both',
     }
 }

@@ -2,9 +2,9 @@ import React from "react";
 
 function GuestMessage({ id = "", message = "", from = "" }) {
   return (
-    <li>
+    <li style={styles.liElement}>
       <div style={styles.messageData}>
-        <span style={styles.messageDataTime}>{new Date(message.date)?.toLocaleTimeString()}</span> 
+        <span style={styles.messageDataTime}>{new Date(message.date)?.toLocaleTimeString()}</span>
         &nbsp; &nbsp;
         <span style={styles.messageDataName}>{message.senderName}</span>{" "}
         <i className="fa fa-circle me"></i>
@@ -24,6 +24,10 @@ function GuestMessage({ id = "", message = "", from = "" }) {
 export default GuestMessage;
 
 const styles = {
+  liElement: {
+    display: 'block',
+    clear: 'both',
+  },
   messageData: {
     marginBottom: "15px",
   },
@@ -41,11 +45,11 @@ const styles = {
     position: "relative",
   },
   guestMessage: {
-    background: "#86BB71",
+    background: "#94C2ED",
   },
   floatRight: {
     float: "right",
   },
   messageDataTime: { color: "#a8aab1", paddingLeft: "6px" },
-  messageDataName: {},
+  messageDataName: { float: 'left' },
 };

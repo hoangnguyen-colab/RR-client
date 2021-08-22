@@ -2,7 +2,7 @@ import React from "react";
 
 function UserMessage({ message = {}}) {
   return (
-    <li>
+    <li style={styles.liElement}>
       <div style={{ ...styles.messageData, ...styles.alignRight }}>
         <span style={styles.messageDataTime}>{new Date(message.date)?.toLocaleTimeString()}</span> &nbsp;
         &nbsp;
@@ -25,6 +25,10 @@ function UserMessage({ message = {}}) {
 export default UserMessage;
 
 const styles = {
+  liElement: {
+      display: 'block',
+      clear: 'both',
+  },
   messageData: {
     marginBottom: "15px",
   },
@@ -42,7 +46,7 @@ const styles = {
     position: "relative",
   },
   userMessage: {
-    background: "#94C2ED",
+    background: "#86BB71",
   },
   floatRight: {
     float: "right",
