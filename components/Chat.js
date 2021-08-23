@@ -88,7 +88,7 @@ export default Chat;
 
 const styles = {
     chat: {
-        width: '40%',
+        width: '500px',
         float: 'left',
         background: '#F2F5F8',
         borderTopRightRadius: '5px',

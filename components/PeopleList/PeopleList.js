@@ -1,34 +1,48 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { UserContext } from '@contexts/UserContext';
 import { SocketContext } from '@contexts/SocketContext';
 import Image from 'next/image';
+import Lottie from 'react-lottie';
+
+import animationData from '@lottie/avatar';
 
 function PeopleList() {
+    const { user } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
-
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
         if (socket) {
-            socket.on('join', user => {
-                setUsers(users => [...users, {
-                    userId: user.userId,
-                    name: user.name
-                }]);
+            socket.emit('getUserList', { userId: user.id }, function (userList) {
+                setUsers(userList)
             });
 
-            socket.on('on_disconnet', user => {
-                setUsers(users.filter(item => item.userId !== user.userId));
+            socket.on('on_join', userList => {
+                setUsers(userList)
+            });
+
+            socket.on('on_disconnet', userList => {
+                setUsers(userList)
             });
         }
     }, [socket]);
+
+    const randomFile = Math.floor(Math.random() * 4);
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData[randomFile],
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
 
     const UserItem = ({ name = "" }) => {
         return (
             <li style={styles.user}>
                 <div style={styles.userImg}>
-                    <Image
-                        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
-                        alt="avatar"
+                    <Lottie
+                        options={defaultOptions}
                         width={50}
                         height={50}
                     />
@@ -43,16 +57,21 @@ function PeopleList() {
         )
     }
 
+    const RenderUserList = () => {
+        return (
+            <ul style={styles.listStyle}>
+                {users.length > 0 && users.map((item, index) => {
+                    if (user.id !== item.userId) return <UserItem key={index} name={item.name} />
+                    else return null;
+                })}
+            </ul>
+        )
+    }
+
     return (
         <div style={styles.peopleList}>
             <div style={styles.searchBox}>Active User</div>
-            <ul style={styles.listStyle}>
-                {users.length > 0 && users.map((item, index) => {
-                    return (
-                        <UserItem key={index} name={item.name} />
-                    )
-                })}
-            </ul>
+            <RenderUserList />
         </div>
     )
 }

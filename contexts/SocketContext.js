@@ -14,12 +14,12 @@ export function SocketProvider(props) {
     }
 
     useEffect(() => {
-        return () => {
-            if(socket) {
-                socket.emit('disconnect');
-                socket.off();
-            }
-        }
+        // return () => {
+        //     if(socket) {
+        //         socket.emit('disconnect');
+        //         socket.off();
+        //     }
+        // }
     }, [])
 
     return (
