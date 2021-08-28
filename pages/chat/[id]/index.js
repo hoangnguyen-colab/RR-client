@@ -6,25 +6,19 @@ import PeopleList from "@components/PeopleList/PeopleList";
 import { useRouter } from "next/router";
 import withAuth from "@hocs/withAuth";
 
-function Home() {
-  const router = useRouter();
-  const { user } = useContext(UserContext);
-  const { socket } = useContext(SocketContext);
-
-  useEffect(() => {
-    if (!user.id) {
-      router.push("/login");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (socket) {
-      socket.emit('join', {
-        userId: user.id,
-        userName: user.name
-      });
-    }
-  }, []);
+function index() {
+    const router = useRouter();
+    const { user } = useContext(UserContext);
+    const { socket } = useContext(SocketContext);
+  
+    useEffect(() => {
+      if (socket) {
+        socket.emit('join_private', {
+          userId: user.id,
+          userName: user.name
+        });
+      }
+    }, []);
 
   return (
     <div style={styles.container}>
@@ -34,7 +28,7 @@ function Home() {
   );
 }
 
-export default withAuth(Home);
+export default withAuth(index);
 
 const styles = {
   container: {

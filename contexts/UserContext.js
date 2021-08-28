@@ -17,12 +17,6 @@ export function UserProvider({ children }) {
         setUser(user);
         Cookie.set("token", user.id, { expires: 7 });
         setAuthenticated(true);
-        if (socket) {
-            socket.emit('join', {
-                userId: user.id,
-                userName: user.name
-            });
-        }
     }
 
     return (

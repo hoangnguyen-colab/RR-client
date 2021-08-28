@@ -115,7 +115,7 @@ function LoginForm() {
                         alignItems="center"
                         spacing={36}
                     >
-                        <Typography variant="h5">Login</Typography>
+                        <Typography variant="h5">Enter username</Typography>
                         <TextField
                             label="Username"
                             className={classes.input_field}
